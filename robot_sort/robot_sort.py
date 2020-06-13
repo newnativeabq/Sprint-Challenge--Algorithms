@@ -94,20 +94,12 @@ class SortingRobot:
         """
         return self._light == "ON"
 
-    def sort(self, max_count):
+    def sort(self):
         """
         Sort the robot's list.
         """
-        # First pass bubble sort, ascending order
-        # TODO problem with None handling
-        # Set action to 'GO'
-        # self.set_light_on()
-        # Status Indicator
-        # Pick up the first item
-        # self.swap_item()
-        # count = 0
-        # If a swap, light stays on, else turn it off
-         # self.set_light_off()
+
+        # Solution with breaks
         while not self.light_is_on():
             self.set_light_on()
             while self.can_move_right():
@@ -131,6 +123,9 @@ class SortingRobot:
                 self.move_right()
                 self.swap_item()
                 self.move_left()
+
+        # TODO problem with None handling
+        # Trying to condense into right pass left pass.  Fails with None
         # while self.light_is_on():
         #     self.set_light_on()
         #     self.move_right()
