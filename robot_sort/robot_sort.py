@@ -4,7 +4,7 @@ class SortingRobot:
         SortingRobot takes a list and sorts it.
         """
         self._list = l          # The list the robot is tasked with sorting
-        self._item = None       # The item the robot is holding
+        self._item = None      # The item the robot is holding
         self._position = 0      # The list position the robot is at
         self._light = "OFF"     # The state of the robot's light
         self._time = 0          # A time counter (stretch)
@@ -81,53 +81,80 @@ class SortingRobot:
         Turn on the robot's light
         """
         self._light = "ON"
+
     def set_light_off(self):
         """
         Turn off the robot's light
         """
         self._light = "OFF"
+
     def light_is_on(self):
         """
         Returns True if the robot's light is on and False otherwise.
         """
         return self._light == "ON"
 
-    def sort(self):
+    def sort(self, max_count):
         """
         Sort the robot's list.
         """
         # First pass bubble sort, ascending order
-        # Pick up the first item
-        self.swap_item()
+        # TODO problem with None handling
         # Set action to 'GO'
-        self.set_light_on()
+        # self.set_light_on()
         # Status Indicator
-        flipped = False
-
+        # Pick up the first item
+        # self.swap_item()
+        # count = 0
         # If a swap, light stays on, else turn it off
-        while self.light_is_on():
-            flipped = False
-            # Right Pass
+         # self.set_light_off()
+        while not self.light_is_on():
+            self.set_light_on()
             while self.can_move_right():
+                self.swap_item()
                 self.move_right()
-                if self.compare_item() == 1:
-                    self.flip_left_item()
-                    flipped = True
-                else:
+                if self.compare_item() > 0:
                     self.swap_item()
-            # Left Pass
-            while self.can_move_left():
+                    self.set_light_off()
                 self.move_left()
-                if self.compare_item() == -1:
-                    self.flip_right_item()
-                    flipped = True
-                else:
+                self.swap_item()
+                self.move_right()
+            if self.light_is_on():
+                break
+            self.set_light_on()
+            while self.can_move_left():
+                self.swap_item()
+                self.move_left()
+                if self.compare_item() < 0:
                     self.swap_item()
+                    self.set_light_off()
+                self.move_right()
+                self.swap_item()
+                self.move_left()
+        # while self.light_is_on():
+        #     self.set_light_on()
+        #     self.move_right()
+        #     # Right Pass
+        #     while self.can_move_right():
+        #         if self.compare_item() == -1:
+        #             if self.can_move_left():
+        #                 self.flip_left_item()
+        #                 self.set_light_on()
+        #         self.move_right()
+        #     # Left Pass
+        #     while self.can_move_left():
+        #         self.move_left()
+            #     if self.compare_item() == 1:
+            #         if self.can_move_right():
+            #             self.flip_right_item()
+            #             self.set_light_on()
+            #     self.move_left()
 
             # Control whether to stop
-            if flipped:
-                self.set_light_off()
-                
+            # print('Pass {} complete'.format(count))
+            # count += 1
+            # if count > max_count:
+            #     self.set_light_off()
                 
     def flip_left_item(self):
         self.swap_item()
@@ -150,9 +177,11 @@ if __name__ == "__main__":
 
     l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
 
-    ls = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78]
-
-    robot = SortingRobot(ls)
-    robot.sort()
-    print(robot._list)
-    print(robot._item)
+    ls = [15, 41, 58, 49, 26, 4]
+    robots = [SortingRobot(ls) for _ in range(10)]
+    for i in range(10):
+        robot = SortingRobot(ls)
+        robots[i].sort(max_count=i)
+        # robot.sort()
+        print(robots[i]._list)
+        print(robots[i]._item)

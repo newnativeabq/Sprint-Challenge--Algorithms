@@ -2,10 +2,10 @@
 
 ## Exercise I
 
-a)  O(C).  Once n > 0, the while loops stops.
+a)  0(n) or O(n^c) where c = 3. 
 
 
-b)  O(n).  Because j is being set to 1, the for loop is the only driver of operations n > 1
+b)  O(nlog(n)).  The operation will proceed first O(n) times, then ~log(n) times for whe inner while condition.
 
 
 c)  O(n^1) = O(n).  One recursive call per n
